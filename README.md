@@ -13,15 +13,42 @@ A general setup for a strong Raspberry Pi. I want a setup that is strong enough 
 
 ## General setup
 
+- 5V supply
+- RPi4 8GB
+- Argone M.2 case
+- SSD disk
+
 ### SD card
+
+- small SD card
+
+### Assembly
+
+- assemble
+
+### Initial boot
+
+- SD card preparation
+- boot
 
 ### boot from SSD
 
-### encrypted data partition
-
-- decode by sending password through ssh?
+- boot from SSD
+- remove SD card altogether
 
 ## Robustifying
+
+- what threat model?
+- threat model is not physical access; nothing to do against it (or nearly, or that would be a lot of work)
+
+### encrypted data partition
+
+- if physical access: ok to have full disk encryption
+- if not: what is threat model? is it just that the SSD hard drive gets thrown away later on?
+- if no physical access: need to be able to decrypt data; ok in case the RPi is protected and cannot be tampered with, but still want to protect very sensitive data just in case the hard disk is remobed at some point
+- encrypted data partition on the SSD; use the SD card to store the key to decrypt it; so, when throwing stuff away, as long as SD card and SSD do not end up at the same place, will be useless
+- does not protect against physical access, but what would? ...
+- TPM could be a better alternative of course :)
 
 ### Change user account name and password
 
