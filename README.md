@@ -1,6 +1,13 @@
 # strong_rpi_setup
 
-A general setup for a strong Raspberry Pi. I want a setup that is strong enough that I can make it available to the internet, SSH safely to it, trust that it has good uptime etc.
+A general setup for a strong Raspberry Pi. I want a setup that is strong enough that I can make it available to the internet, SSH safely to it, trust that it has good uptime etc. This readme should describe how to achieve this, through:
+
+- using "good" hardware
+- using encryption of the hard drive
+- changing all the necessary defaults to avoid out-of-the-box default passwords and accounts and hostnames, 
+- setting up a robust SSH configuration
+- setting up the watchdog
+- setting up some reverse tunnel to a trusted server
 
 ## Hardware
 
@@ -29,6 +36,8 @@ A general setup for a strong Raspberry Pi. I want a setup that is strong enough 
 ### Use UFW to limit SSH attempts
 
 ### Ban IPs
+
+### Setup reverse SSH tunnel to a trusted server
 
 ### Disable root loging and set root password
 
