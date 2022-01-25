@@ -47,3 +47,11 @@ A general setup for a strong Raspberry Pi. I want a setup that is strong enough 
 ## Sources
 
 A number of sources I used for preparing this.
+
+- https://github.com/sunknudsen/privacy-guides/blob/master/how-to-configure-hardened-raspberry-pi/README.md
+- https://raspberrytips.com/security-tips-raspberry-pi/
+- https://pimylifeup.com/raspberry-pi-security/
+- https://piprojects.us/hardening-your-raspberry-pi-installation/
+- https://github.com/tschaffter/raspberry-pi
+- https://diode.io/raspberry%20pi/running-forever-with-the-raspberry-pi-hardware-watchdog-20202/
+- 
