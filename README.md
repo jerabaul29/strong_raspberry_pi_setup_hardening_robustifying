@@ -20,7 +20,11 @@ A general setup for a strong Raspberry Pi. I want a setup that is strong enough 
 
 ### SD card
 
-- small SD card
+```
+~$ rpi-imager
+```
+
+And follow instructions. If you are using a Rpi with less or equal to 4GB, both 32 and 64 bit OSes are ok; if you are using a RPi with more than 4GB, you will need a 64 bit OS to take advantage of that - a 32 bit OS will work, but only up to around 4GB or RAM will actually be used.
 
 ### Assembly
 
