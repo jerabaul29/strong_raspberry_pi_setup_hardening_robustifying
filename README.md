@@ -28,7 +28,12 @@ And follow instructions. If you are using a Rpi with less or equal to 4GB, both 
 
 ### Assembly
 
-- assemble
+There are a number of nice cases, for my part, I like best the Argon ONE case (for providing a nice housing and cooling), or Argon ONE M.2 (for providing housing, cooling, and place for a SSD-over-USD drive). Remember that the format between RPi up to 3 vs. RPi 4 are different, so make sure to use a case that is compatible with your model of RPi.
+
+Assemble following the instructions, make sure to:
+
+- XX : building
+- XX : cooling
 
 ### Initial boot
 
