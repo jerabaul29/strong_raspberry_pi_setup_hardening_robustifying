@@ -140,8 +140,158 @@ Choosing "decent" defaults, the annoying fan noise should be gone except maybe w
 
 ### boot from SSD
 
-- boot from SSD
-- remove SD card altogether
+Make sure that the M.2 SATA SSD disk is well installed, and that the USB connector outside of the box is well in place to connect the RPi to the SSD disk.
+
+Then:
+
+- full update the RPi:
+
+```
+sudo apt-get update
+sudo apt-get full-upgrade
+sudo rpi-update
+sudo reboot
+sudo rpi-eeprom-update -d -a
+sudo reboot
+```
+
+- check that the SSD is well present and visible; if it is, you will see both the SD card and the SSD:
+
+```
+pi@raspberrypi:~ $ lsusb
+Bus 002 Device 002: ID 174c:1156 ASMedia Technology Inc. Forty
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 002: ID 2109:3431 VIA Labs, Inc. Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
+
+The ASMedia entry is the SSD disk; it is also visible as:
+
+```
+pi@raspberrypi:~ $ lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda           8:0    0  1.8T  0 disk 
+mmcblk0     179:0    0 14.8G  0 disk 
+|-mmcblk0p1 179:1    0  256M  0 part /boot
+`-mmcblk0p2 179:2    0 14.6G  0 part /
+```
+
+See the sda 1.8T entry.
+
+- At this point, we need to clone all the system from the SD card to the SSD disk. Since we work headless, we need to use a script to make the SSD bootable instead of using the "usual" GUI tool: see https://github.com/billw2/rpi-clone . To install rpi-clone:
+
+```
+pi@raspberrypi:/ $ cd /home/pi/
+pi@raspberrypi:~ $ mkdir Git
+pi@raspberrypi:~ $ cd Git/
+pi@raspberrypi:~/Git $ git clone https://github.com/billw2/rpi-clone.git
+pi@raspberrypi:~/Git $ cd rpi-clone/
+pi@raspberrypi:~/Git/rpi-clone $ sudo cp rpi-clone rpi-clone-setup /usr/local/sbin
+pi@raspberrypi:~/Git/rpi-clone $ sudo rpi-clone-setup -t PUT_YOUR_HOSTNAME
+```
+
+- Next, we need to actually run rpi-clone. For this, we need to find the destination on which to clone, and run the command. This will both clone the boot and the "normal" partitions, and resize them to take advantage of the full disk. Note that this can take a few minutes.
+
+```
+pi@raspberrypi:~/Git/rpi-clone $ lsblk
+NAME        MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sda           8:0    0  1.8T  0 disk 
+mmcblk0     179:0    0 14.8G  0 disk 
+|-mmcblk0p1 179:1    0  256M  0 part /boot
+`-mmcblk0p2 179:2    0 14.6G  0 part /
+pi@raspberrypi:~/Git/rpi-clone $ sudo rpi-clone sda
+Error: /dev/sda: unrecognised disk label
+
+Booted disk: mmcblk0 15.9GB                Destination disk: sda 2.0TB
+---------------------------------------------------------------------------
+Part      Size    FS     Label           Part   Size  FS  Label  
+1 /boot   256.0M  fat32  --                                      
+2 root     14.6G  ext4   rootfs                                  
+---------------------------------------------------------------------------
+== Initialize: IMAGE partition table - partition number mismatch: 2 -> 0 ==
+1 /boot               (48.5M used)   : MKFS  SYNC to sda1
+2 root                (3.6G used)    : RESIZE  MKFS  SYNC to sda2
+---------------------------------------------------------------------------
+Run setup script       : no.
+Verbose mode           : no.
+-----------------------:
+** WARNING **          : All destination disk sda data will be overwritten!
+-----------------------:
+
+Initialize and clone to the destination disk sda?  (yes/no): yes
+Optional destination ext type file system label (16 chars max): 
+
+Initializing
+  Imaging past partition 1 start.
+  => dd if=/dev/mmcblk0 of=/dev/sda bs=1M count=8 ...
+  Resizing destination disk last partition ...
+    Resize success.
+  Changing destination Disk ID ...
+  => mkfs -t vfat -F 32  /dev/sda1 ...
+  => mkfs -t ext4  /dev/sda2 ...
+
+Syncing file systems (can take a long time)
+Syncing mounted partitions:
+  Mounting /dev/sda2 on /mnt/clone
+  => rsync // /mnt/clone with-root-excludes ...
+  Mounting /dev/sda1 on /mnt/clone/boot
+  => rsync /boot/ /mnt/clone/boot  ...
+
+Editing /mnt/clone/boot/cmdline.txt PARTUUID to use 3e66da39
+Editing /mnt/clone/etc/fstab PARTUUID to use 3e66da39
+===============================
+Done with clone to /dev/sda
+   Start - 17:03:37    End - 17:06:25    Elapsed Time - 2:48
+
+Cloned partitions are mounted on /mnt/clone for inspection or customizing. 
+
+Hit Enter when ready to unmount the /dev/sda partitions ...
+  unmounting /mnt/clone/boot
+  unmounting /mnt/clone
+===============================
+```
+
+- To inspect the content of hte newly cloned SSD disk, see:
+
+```
+pi@raspberrypi:/ $ sudo mkdir /mnt/sda_disk_1
+pi@raspberrypi:/ $ sudo mkdir /mnt/sda_disk_2
+pi@raspberrypi:/ $ sudo mount /dev/sda1 /mnt/sda_disk_1/
+pi@raspberrypi:/ $ sudo mount /dev/sda2 /mnt/sda_disk_2/
+```
+
+and you can look at ```/mnt/sda_disk_1/``` and ```_2``` and check that all looks good.
+
+- set the boot order:
+
+```
+sudo raspi-config
+# > Advanced options > Boot order > B2 USB boot and ENTER to confirm
+# note that a reboot will be needed for this to take effect; you can wait to reboot though, as we need to set up the SSD disk
+```
+
+Note: if something goes wrong in the following, the RPi will fail to boot, as it will try to boot from the wrongly copied / empty SSD disk; to remedy this, in case the SSD disk has not been cloned yet or something went wrong but you want to reboot, simply remove the USB jumper before rebooting, and the SSD disk will not be available, so that the RPi will default to booting on the SD card instead.
+
+- At this stage, we should have 1) by default, boot from the USB SSD drive external storage, 2) cloned both partitions of the SD card into the SSD drive to make it bootable and usable as the main drive. So, we are ready to reboot, and the boot will happen from the SSD drive this time. This is confirmed by (note that booting from the SSD the first time may take a few seconds extra):
+
+```
+pi@raspberrypi:~ $ sudo reboot now
+~$ ssh -o PreferredAuthentications=password pi@10.42.0.208
+pi@10.42.0.208's password: 
+pi@raspberrypi:~ $ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       1.8T  3.7G  1.7T   1% /
+devtmpfs        3.7G     0  3.7G   0% /dev
+tmpfs           3.9G     0  3.9G   0% /dev/shm
+tmpfs           1.6G  944K  1.6G   1% /run
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+/dev/sda1       253M   49M  204M  20% /boot
+tmpfs           790M   24K  790M   1% /run/user/1000
+/dev/mmcblk0p2   15G  3.7G   11G  27% /media/pi/rootfs
+/dev/mmcblk0p1  253M   49M  204M  20% /media/pi/boot
+```
+
+You can see here that ```dev/root``` is now 1.8T in size, i.e we are well booted to the SSD disk, and the 2 partitions of the SD card are visible as ```/dev/mmcblk0p1``` and ```2```: all is in good order.
 
 ## Robustifying
 
