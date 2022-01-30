@@ -408,6 +408,13 @@ send email
 
 ### Disable SSH password logging
 
+### perform rsync and send email
+
+as cron
+before: df -h
+information to check that able to connect
+when done: df -h, stats from rsync (possibly full rsync ouptut?)
+
 ### Set 2FA on SSH
 
 ### Change SSH port
