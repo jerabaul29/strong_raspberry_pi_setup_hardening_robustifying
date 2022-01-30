@@ -1,8 +1,9 @@
-# strong_rpi_setup
+# strong_rpi_setup headless
 
-A general setup for a strong Raspberry Pi. I want a setup that is strong enough that I can make it available to the internet, SSH safely to it, trust that it has good uptime etc. This readme should describe how to achieve this, through:
+A general setup for a strong Raspberry Pi headless setup. I want a setup that is strong enough that I can make it available to the internet, SSH safely to it, trust that it has good uptime etc. This readme should describe how to achieve this, through:
 
 - using "good" hardware
+- setting things up for headless use
 - using encryption of the hard drive
 - changing all the necessary defaults to avoid out-of-the-box default passwords and accounts and hostnames, 
 - setting up a robust SSH configuration
@@ -13,10 +14,11 @@ A general setup for a strong Raspberry Pi. I want a setup that is strong enough 
 
 ## General setup
 
-- 5V supply
-- RPi4 8GB
-- Argone M.2 case
-- SSD disk
+- 5V supply; choose a GOOD power supply to avoid brownout (XX: more details!)
+- RPi4 , 4GB or 8GB
+- Argone M.2 case (XX: more details!)
+- SSD disk (XX: more details; comparible with M.2 Argone case)
+- SD card (8GB or 16GB will be fine)
 
 ### SD card
 
@@ -154,6 +156,8 @@ Choosing "decent" defaults, the annoying fan noise should be gone except maybe w
 - TPM could be a better alternative of course :)
 
 ### Change user account name and password
+
+### admin session, user session, dummy ssh tunnel session
 
 ### Change hostname
 
