@@ -339,6 +339,8 @@ You can see here that ```dev/root``` is now 1.8T in size, i.e we are well booted
 
 ### disable 
 
+### if boot from SD card, send notice about it, and reboot instead
+
 ## Sources
 
 A number of sources I used for preparing this.
