@@ -313,9 +313,9 @@ USB_MSD_PWR_OFF_TIME=0
 BOOT_ORDER=0xf14
 ```
 
-It also seems like removing the SD card may help to avoid vooting to the SD card instead of the SSD somehow.
+It also seems like removing the SD card may help to avoid booting to the SD card instead of the SSD somehow.
 
-### watdog
+### watchdog
 
 Make sure that the RPi reboots in case any issue happens by setting up the watchdog; for this:
 
@@ -366,6 +366,25 @@ echo 'interface = eth0' >> /etc/watchdog.conf
 echo 'interface = wlan0' >> /etc/watchdog.conf
 exit
 ```
+
+### send email on boot
+
+XX:TODO: send email with information when booting using cron @reboot
+
+```
+sudo apt-get install sendmail
+sendmail jean.rblt@gmail.com < file_with_email
+where the file looks like
+Subject: Terminal Email Send
+
+Email Content line 1
+Email Content line 2
+```
+
+cron script
+info df -h
+more info?
+send email
 
 ## Robustifying
 
@@ -426,3 +445,37 @@ A number of sources I used for preparing this.
 - https://github.com/tschaffter/raspberry-pi
 - https://diode.io/raspberry%20pi/running-forever-with-the-raspberry-pi-hardware-watchdog-20202/
 - 
+
+## monitoring the RPi
+
+- temperature of the GPU and CPU:
+
+```
+pi@raspberrypi:~ $ vcgencmd measure_temp
+temp=35.0'C
+pi@raspberrypi:~ $ cpu=$(</sys/class/thermal/thermal_zone0/temp)
+pi@raspberrypi:~ $ echo "$((cpu/1000)) c"
+36 c
+```
+
+- temperature of the SSD drive:
+
+```
+pi@raspberrypi:~ $ sudo apt install smartmontools
+pi@raspberrypi:~ $ sudo smartctl -x /dev/sda | grep 'Temperature'
+194 Temperature_Celsius     -O---K   053   048   000    -    47 (Min/Max 10/48)
+0x05  =====  =               =  ===  == Temperature Statistics (rev 1) ==
+0x05  0x008  1              47  ---  Current Temperature
+0x05  0x010  1               -  ---  Average Short Term Temperature
+0x05  0x018  1               -  ---  Average Long Term Temperature
+0x05  0x020  1              47  ---  Highest Temperature
+0x05  0x028  1              41  ---  Lowest Temperature
+0x05  0x030  1               -  ---  Highest Average Short Term Temperature
+0x05  0x038  1               -  ---  Lowest Average Short Term Temperature
+0x05  0x040  1               -  ---  Highest Average Long Term Temperature
+0x05  0x048  1               -  ---  Lowest Average Long Term Temperature
+0x05  0x050  4               0  ---  Time in Over-Temperature
+0x05  0x058  1              95  ---  Specified Maximum Operating Temperature
+0x05  0x060  4               0  ---  Time in Under-Temperature
+0x05  0x068  1               0  ---  Specified Minimum Operating Temperature
+```
