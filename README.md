@@ -10,8 +10,6 @@ A general setup for a strong Raspberry Pi headless setup. I want a setup that is
 - setting up the watchdog
 - setting up some reverse tunnel to a trusted server
 
-## Hardware
-
 ## General setup
 
 Note that it may be a good idea to buy everything from the same shop to limit shipping costs; for example, https://thepihut.com use to have a good sample of products.
@@ -316,6 +314,49 @@ BOOT_ORDER=0xf14
 ```
 
 It also seems like removing the SD card may help to avoid vooting to the SD card instead of the SSD somehow.
+
+### watdog
+
+Make sure that the RPi reboots in case any issue happens by setting up the watchdog; for this:
+
+- enable the hardware watchdog to make it visible to the system:
+
+```
+pi@raspberrypi:~ $ sudo su
+root@raspberrypi:/home/pi# echo 'dtparam=watchdog=on' >> /boot/config.txt
+root@raspberrypi:/home/pi# exit
+exit
+pi@raspberrypi:~ $ sudo reboot
+```
+
+After that, we need to install and set up the software to communicate with the watchdog.
+
+- Install the watchdog system service
+
+```
+sudo apt-get update
+sudo apt-get install watchdog
+```
+
+- configure the watchdog service
+
+```
+sudo su
+echo 'watchdog-device = /dev/watchdog' >> /etc/watchdog.conf
+echo 'watchdog-timeout = 15' >> /etc/watchdog.conf
+echo 'max-load-1 = 24' >> /etc/watchdog.conf
+exit
+```
+
+- enable the watchdog service:
+
+```
+sudo systemctl enable watchdog
+sudo systemctl start watchdog
+sudo systemctl status watchdog
+```
+
+- if you want you can test using a fork bomb: ```sudo bash -c ':(){ :|:& };:'```
 
 ## Robustifying
 
