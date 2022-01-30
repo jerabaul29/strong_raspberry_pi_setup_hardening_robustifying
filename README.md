@@ -20,11 +20,23 @@ A general setup for a strong Raspberry Pi. I want a setup that is strong enough 
 
 ### SD card
 
+Prepare the SD card using the rpi-image tool:
+
 ```
 ~$ rpi-imager
 ```
 
 And follow instructions. If you are using a Rpi with less or equal to 4GB, both 32 and 64 bit OSes are ok; if you are using a RPi with more than 4GB, you will need a 64 bit OS to take advantage of that - a 32 bit OS will work, but only up to around 4GB or RAM will actually be used.
+
+As always, remember to mount the SD card when you insert it and want to access it, and unmount / eject the SD card before removing it.
+
+In order to be able to SSH into the RPi the first time you boot it, remember to add a file called ```ssh``` in the boot partition of the SD card:
+
+```
+/media/jrmet/boot$ touch ssh
+```
+
+Without this file, SSH connection will be disabled as a security measure.
 
 ### Assembly
 
@@ -32,8 +44,10 @@ There are a number of nice cases, for my part, I like best the Argon ONE case (f
 
 Assemble following the instructions, make sure to:
 
-- XX : building
-- XX : cooling
+- avoid touching the PCBs with your fingers due to the risk of electrostatic discharge
+- insert the SD card only when you are finished putting the PCBs and components together
+- remember to put the thermal paste
+- assemble the M.2 drive and screw it in place
 
 ### Initial boot
 
