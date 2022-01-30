@@ -19,7 +19,7 @@ Note that it may be a good idea to buy everything from the same shop to limit sh
 - 5V supply; choose a GOOD power supply to avoid brownout (for example, the official one with the right plug: https://www.raspberrypi.com/products/micro-usb-power-supply/?variant=raspberry-pi-125w-psu-eu-wh)
 - RPi4 , 4GB or 8GB
 - Argone M.2 case (https://www.argon40.com/argon-one-m-2-case-for-raspberry-pi-4.html)
-- M.2 SATA SSD disk (do NOT buy a NVMe disk, you need a M.2 SATA; for example, https://thepihut.com/products/wd-green-240gb-m-2-internal-ssd or similar)
+- M.2 SATA SSD disk (do NOT buy a NVMe disk, you need a M.2 SATA; for example, https://thepihut.com/products/wd-green-240gb-m-2-internal-ssd or similar; also, check out the max power consumption allowed for the drive by what the RPi can supply, vs. the consumption of the SSD drive, and make sure there is a bit of margin; if not, the SSD drive may not work or be unstable)
 - SD card (8GB or 16GB will be fine)
 
 ### SD card
