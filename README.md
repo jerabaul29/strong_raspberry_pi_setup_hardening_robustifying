@@ -301,6 +301,22 @@ tmpfs           790M   24K  790M   1% /run/user/1000
 
 You can see here that ```dev/root``` is now 1.8T in size, i.e we are well booted to the SSD disk, and the 2 partitions of the SD card are visible as ```/dev/mmcblk0p1``` and ```2```: all is in good order.
 
+- It looks like USB booting can be a bit unstable with the default parameters, depending on which SSD disk is in use; to edit boot parameters, see:
+
+```
+pi@raspberrypi:~ $ sudo rpi-eeprom-config -e
+# and the options therein; seems like a config like this, see in particular USB_MSD_PWR_OFF_TIME=0 , may help
+pi@raspberrypi:~ $ rpi-eeprom-config
+[all]
+BOOT_UART=0
+WAKE_ON_GPIO=1
+POWER_OFF_ON_HALT=0
+USB_MSD_PWR_OFF_TIME=0
+BOOT_ORDER=0xf14
+```
+
+It also seems like removing the SD card may help to avoid vooting to the SD card instead of the SSD somehow.
+
 ## Robustifying
 
 - what threat model?
