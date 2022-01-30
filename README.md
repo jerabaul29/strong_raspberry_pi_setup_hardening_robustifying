@@ -358,6 +358,15 @@ sudo systemctl status watchdog
 
 - if you want you can test using a fork bomb: ```sudo bash -c ':(){ :|:& };:'```
 
+- If some specific services go down and cause trouble, it is possible to reboot with the watchdog then too by adding these to the watchdog conf. For example, if the eth0 or wlan0 interface tends to go down, can do something like:
+
+```
+sudo su
+echo 'interface = eth0' >> /etc/watchdog.conf
+echo 'interface = wlan0' >> /etc/watchdog.conf
+exit
+```
+
 ## Robustifying
 
 - what threat model?
