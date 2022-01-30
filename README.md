@@ -155,6 +155,14 @@ sudo rpi-eeprom-update -d -a
 sudo reboot
 ```
 
+And use raspi-config to use the latest ROM for boot:
+
+```
+sudo raspi-config
+# > Advanced options > Bootloader Version > E1 Latest
+# check what is displayed then
+```
+
 - check that the SSD is well present and visible; if it is, you will see both the SD card and the SSD:
 
 ```
