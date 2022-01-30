@@ -49,10 +49,90 @@ Assemble following the instructions, make sure to:
 - remember to put the thermal paste
 - assemble the M.2 drive and screw it in place
 
-### Initial boot
+### Initial boot and SSHing headless
 
-- SD card preparation
-- boot
+Power the RPi and connect a Ethernet cable between the RPi and your machine.
+
+Set up the network on your machine so that it is possible to establish connection between the RPi and your machine over Ethernet. For example, on Ubuntu:
+
+```
+- Go to the network manager (top left)
+- Enter Wired Settings
+- Create a new profile
+- Use the following parameters:
+  - connect automatically
+  - make available to other usrs
+  - no metered connection
+  - name: RPi
+  - MTU: automatic
+  - IPv4: shated to other computers
+  - IPv6: shared to other computers
+  - Security: none
+```
+
+Find the IP range on the interface on which the RPi is connected using ifconfig; in my case, I am connected on ethernet, so:
+
+```
+~$ ifconfig
+[...]
+enp0s31f6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.42.0.1  netmask 255.255.255.0  broadcast 10.42.0.255
+[...]
+```
+
+Scan for the RPi to find its address:
+
+```
+~$ nmap -sP 10.42.0.0/24
+Starting Nmap 7.80 ( https://nmap.org ) at 2022-01-30 11:30 CET
+Nmap scan report for L590 (10.42.0.1)
+Host is up (0.00076s latency).
+Nmap scan report for 10.42.0.208
+Host is up (0.00028s latency).
+Nmap done: 256 IP addresses (2 hosts up) scanned in 2.85 seconds
+```
+
+SSH into the RPi using the IP address you just found; default username: pi ; default password: raspberry . Note that to avoid being banished due to too many failed attempts you may need to ask for password authentication, so that your computer does not try all the SSH you own before trying to password connect, which may be blocked due to too many attempts:
+
+```
+~$ ssh -o PreferredAuthentications=password pi@10.42.0.208
+pi@10.42.0.208's password: 
+[...]
+pi@raspberrypi:~ $ 
+```
+
+Change the password at once:
+
+```
+pi@raspberrypi:~ $ passwd
+for example to something like, or more complicated than: some_new_password_55
+```
+
+At this point, update the RPi:
+
+```
+sudo apt update
+sudo apt upgrade
+sudo apt autoremove
+```
+
+The next thing is to configure the RPi:
+
+```
+sudo raspi-config
+Interface Option > SSH > enable SSH server: yes
+Localization Option > locale > 
+```
+
+If you are using an Argone housing, install the corresponding management tools:
+
+```
+pi@raspberrypi:~ $ curl https://download.argon40.com/argon1.sh > argon1.sh
+pi@raspberrypi:~ $ cat argon1.sh # if you want to inspect what it does
+argonne-config
+```
+
+Choosing "decent" defaults, the annoying fan noise should be gone except maybe when using the CPU at maximum capacity.
 
 ### boot from SSD
 
