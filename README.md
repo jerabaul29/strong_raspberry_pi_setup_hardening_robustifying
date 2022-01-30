@@ -358,7 +358,7 @@ sudo systemctl status watchdog
 
 - if you want you can test using a fork bomb: ```sudo bash -c ':(){ :|:& };:'```
 
-- If some specific services go down and cause trouble, it is possible to reboot with the watchdog then too by adding these to the watchdog conf. For example, if the eth0 or wlan0 interface tends to go down, can do something like:
+- If some specific services go down and cause trouble, it is possible to reboot with the watchdog then too by adding these to the watchdog conf. For example, if the eth0 or wlan0 interface tends to go down, can do something like NOTE!! this seems to not be working at present, keeps rebooting, see https://github.com/RPi-Distro/repo/issues/237 ):
 
 ```
 sudo su
