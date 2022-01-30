@@ -14,10 +14,12 @@ A general setup for a strong Raspberry Pi headless setup. I want a setup that is
 
 ## General setup
 
-- 5V supply; choose a GOOD power supply to avoid brownout (XX: more details!)
+Note that it may be a good idea to buy everything from the same shop to limit shipping costs; for example, https://thepihut.com use to have a good sample of products.
+
+- 5V supply; choose a GOOD power supply to avoid brownout (for example, the official one with the right plug: https://www.raspberrypi.com/products/micro-usb-power-supply/?variant=raspberry-pi-125w-psu-eu-wh)
 - RPi4 , 4GB or 8GB
-- Argone M.2 case (XX: more details!)
-- SSD disk (XX: more details; comparible with M.2 Argone case)
+- Argone M.2 case (https://www.argon40.com/argon-one-m-2-case-for-raspberry-pi-4.html)
+- M.2 SATA SSD disk (do NOT buy a NVMe disk, you need a M.2 SATA; for example, https://thepihut.com/products/wd-green-240gb-m-2-internal-ssd or similar)
 - SD card (8GB or 16GB will be fine)
 
 ### SD card
