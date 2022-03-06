@@ -313,7 +313,7 @@ USB_MSD_PWR_OFF_TIME=0
 BOOT_ORDER=0xf14
 ```
 
-It also seems like removing the SD card may help to avoid booting to the SD card instead of the SSD somehow.
+It also seems like removing the SD card may help to avoid booting to the SD card instead of the SSD somehow (note: with my specific SSD disk, which should be well within power limits, so this is not a power issue, removing the SD card is the only way I found to reliably boot from SSD; this is likely happening in the following way: the RPi tries "in loop" to boot from the SSD as there is no SD card, and will re-try as many times as needed - seems like it always works in the end :) ).
 
 ### watchdog
 
